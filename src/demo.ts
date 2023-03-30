@@ -49,9 +49,11 @@ console.log(
 const NullifierTreeTemp = new MerkleMap();
 const NullifierTreeProver = new MerkleMap();
 
+console.log("generating prover..");
 const VoteProver = Prover(NullifierTreeProver, VoterDataTree);
-
+console.log("compiling prover..");
 await VoteProver.compile();
+console.log("prover compiled!");
 
 // creating a new proposal - this can also be done on-demand, via an API, etc
 let proposal = new Proposal({
@@ -62,8 +64,13 @@ let proposal = new Proposal({
   abstained: Field(0), // this needs to start at 0, since we havent aggregated any votes
 });
 
+console.log("created a new proposal!");
+console.log(`title: ${proposal.title}
+id: ${proposal.id}`);
+
 let voterDataRoot = VoterDataTree.getRoot();
 
+console.log("generating three votes..");
 let v1 = new Vote({
   authorization: Signature.create(priv, [
     Field(1), // YES
@@ -143,11 +150,13 @@ let st = new StateTransition({
   },
   voterDataRoot: voterDataRoot,
 });
+
+console.log("proving three votes..");
 // we proof three votes!
 let pi = await VoteProver.baseCase(st, votes);
 pi.verify();
-
-console.log(`Result for proposal #${proposal.id}, ${proposal.title}:\n\n\n
+console.log("votes valid!");
+console.log(`result for proposal #${proposal.id}, ${proposal.title}:\n\n\n
 
 YES: ${pi.publicInput.result.after.yes.toString()}
 
