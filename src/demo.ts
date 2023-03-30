@@ -57,7 +57,7 @@ console.log("prover compiled!");
 
 // creating a new proposal - this can also be done on-demand, via an API, etc
 let proposal = new Proposal({
-  title: "Are capybaras cool animals?",
+  title: "Are capybaras awesome?",
   id: Field(123456), // this should be unique to prevent replay attacks
   no: Field(0), // this needs to start at 0, since we havent aggregated any votes
   yes: Field(0), // this needs to start at 0, since we havent aggregated any votes
